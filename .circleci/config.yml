@@ -9,8 +9,7 @@ jobs:
         name: Test App
         command: dotnet test 
   docker-push:
-    machine:
-      image: circleci/python:latest
+    machine: true
     steps:
     - checkout
     - run:
