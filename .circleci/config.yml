@@ -43,6 +43,7 @@ workflows:
   workflow:
     jobs:
     - build
+    - docker-push
 
 # Original config.yml file:
 # version: 2.1
