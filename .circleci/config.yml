@@ -1,19 +1,13 @@
 version: 2
 jobs:
-  build:
+  test:
     docker:
     - image: mcr.microsoft.com/dotnet/core/sdk:2.2
     steps:
     - checkout
     - run:
-        name: Restore packages
-        command: dotnet restore
-    - run:
-        name: Build App
-        command: dotnet build
-    - run:
         name: Test App
-        command: dotnet test --no-build
+        command: dotnet test 
   docker-push:
     docker:
     - image: circleci/python:latest
@@ -42,10 +36,10 @@ workflows:
   version: 2
   workflow:
     jobs:
-    - build
+    - test
     - docker-push:
         requires:
-        - build
+        - test
 
 # Original config.yml file:
 # version: 2.1
