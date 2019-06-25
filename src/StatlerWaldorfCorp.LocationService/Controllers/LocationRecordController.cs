@@ -8,6 +8,7 @@ using StatlerWaldorfCorp.LocationService.Models;
 namespace StatlerWaldorfCorp.LocationService.Controllers
 {
     [Route("locations/{memberId}")]
+    [ApiController]
     public class LocationRecordController : ControllerBase
     {
         private ILocationRecordRepository locationRepository;
@@ -21,7 +22,7 @@ namespace StatlerWaldorfCorp.LocationService.Controllers
         public ActionResult<LocationRecord> AddLocation(Guid memberId, LocationRecord locationRecord)
         {
             locationRepository.Add(locationRecord);
-            return CreatedAtAction($"locations/{memberId}/{locationRecord.Id}", locationRecord);
+            return Created($"locations/{memberId}/{locationRecord.Id}", locationRecord);
         }
 
         [HttpGet]

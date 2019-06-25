@@ -13,7 +13,7 @@ RUN dotnet publish -c Release -o out
 # Build image runtime
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 5001
 COPY --from=build-env /app/docker_entrypoint.sh .
 COPY --from=build-env /app/out/ .
 
