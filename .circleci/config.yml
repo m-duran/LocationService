@@ -3,11 +3,26 @@ jobs:
   test:
     docker:
     - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+      name: ci-pg-locationservice
+      environment:
+        TRANSIENT: false 
+        POSTGRES__CSTR: Host=localhost;Username=integrator;Password=inteword;Database=locationservice;Port=5432
+    - image: circleci/postgres:11.4-alpine-ram
+      environment:
+        POSTGRES_USER: integrator
+        POSTGRES_PASSWORD: inteword
+        POSTGRES_DB: locationservice
     steps:
     - checkout
+    - run: 
+        name: Apply Migrations
+        command: dotnet ef database update --project src/StatlerWaldorfCorp.LocationService/StatlerWaldorfCorp.LocationService.csproj
+    - run: dotnet restore
+    - run: dotnet build --no-restore
     - run:
         name: Test App
-        command: dotnet test 
+        command: dotnet test --no-build
+
   docker-push:
     machine: true
     steps:
@@ -31,20 +46,3 @@ workflows:
         requires:
         - test
 
-# Original config.yml file:
-# version: 2.1
-# jobs:
-#   build:
-#     docker: 
-#       - image: mcr.microsoft.com/dotnet/core/sdk:2.2
-#     steps:
-#       - checkout
-#       - run:
-#           name: Restore packages
-#           command: dotnet Restore
-#       - run:
-#           name: Build App
-#           command: dotnet build
-#       - run:
-#           name: Test App
-#           command: dotnet test
